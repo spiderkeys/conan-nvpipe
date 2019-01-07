@@ -7,11 +7,13 @@ class NvPipeConan(ConanFile):
     version = "0.1"
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
+
     options = {
         "with_encoder": [True, False],
         "with_decoder": [True, False],
         "with_opengl": [True, False],
     }
+
     default_options = (
         "with_encoder=True",
         "with_decoder=True",
@@ -19,9 +21,10 @@ class NvPipeConan(ConanFile):
         )
 
     exports = ["CMakeLists.txt", "FindNvPipe.cmake"]
+
     url="http://github.com/ulricheck/conan-nvpipe"
     license="nvidia demo code - license unknown"
-    description="NVIDIA-accelerated zero latency video compression library for interactive remoting applications "
+    description="NVIDIA-accelerated zero latency video compression library for interactive remoting applications"
     
     requires = (
         "cuda_dev_config/[>=1.0]@camposs/stable",
@@ -31,7 +34,6 @@ class NvPipeConan(ConanFile):
         "type": "git",
         "subfolder": "sources",
         "url": "https://github.com/ulricheck/NvPipe.git",
-        # "revision": "rttrorg-rttr-%s"% version
         "revision": "master",
     }
 
@@ -41,10 +43,10 @@ class NvPipeConan(ConanFile):
         """
         cmake = CMake(self)
 
-        # cmake.definitions["NVPIPE_WITH_ENCODER"] = self.options.with_encoder
-        # cmake.definitions["NVPIPE_WITH_DECODER"] = self.options.with_decoder
-        # cmake.definitions["NVPIPE_WITH_OPENGL"] = self.options.with_opengl
-        # cmake.definitions["NVPIPE_BUILD_EXAMPLES"] = "OFF"
+        cmake.definitions["NVPIPE_WITH_ENCODER"] = self.options.with_encoder
+        cmake.definitions["NVPIPE_WITH_DECODER"] = self.options.with_decoder
+        cmake.definitions["NVPIPE_WITH_OPENGL"] = self.options.with_opengl
+        cmake.definitions["NVPIPE_BUILD_EXAMPLES"] = "OFF"
 
         cmake.configure()
         cmake.build()
@@ -58,4 +60,4 @@ class NvPipeConan(ConanFile):
         self.copy("FindNvPipe.cmake", ".", ".")
         
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs()
+        self.cpp_info.libs = tools.collect_libs(self)
