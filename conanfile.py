@@ -28,12 +28,13 @@ class NvPipeConan(ConanFile):
     
     requires = (
         "cuda_dev_config/[>=1.0]@camposs/stable",
-        )
+        "nvidiacodecsdk/9.0.20@spiderkeys/test"
+    )
 
     scm = {
         "type": "git",
         "subfolder": "sources",
-        "url": "https://github.com/ulricheck/NvPipe.git",
+        "url": "https://github.com/spiderkeys/NvPipe.git",
         "revision": "master",
     }
 
@@ -47,7 +48,6 @@ class NvPipeConan(ConanFile):
         cmake.definitions["NVPIPE_WITH_DECODER"] = self.options.with_decoder
         cmake.definitions["NVPIPE_WITH_OPENGL"] = self.options.with_opengl
         cmake.definitions["NVPIPE_BUILD_EXAMPLES"] = "OFF"
-
         cmake.configure()
         cmake.build()
         cmake.install()
